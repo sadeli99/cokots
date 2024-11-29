@@ -7,7 +7,7 @@ const app = express();
 const upload = multer();
 
 const BOT_TOKEN = "8179083757:AAHqeyoHWGI9cGHkgjSplUKXGGAn2D6goKQ"; // Ganti dengan token bot Anda
-const CHAT_ID = "YOUR_CHAT_ID"; // Ganti dengan ID chat Anda
+const CHAT_ID = "1352694551"; // Ganti dengan ID chat Anda
 const telegramApiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/`;
 
 // Fungsi untuk mengirim pesan teks ke bot Telegram
