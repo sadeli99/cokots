@@ -8,7 +8,11 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/bot-webhook",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/send-data",
       "dest": "/index.js"
     }
   ]
