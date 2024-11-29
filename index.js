@@ -71,11 +71,15 @@ app.post("/bot-webhook", express.json(), async (req, res) => {
 // Endpoint untuk menerima data dari website
 app.post("/send-data", upload.single("photo"), async (req, res) => {
     try {
-        const { message } = req.body;
+        const { message, userAgent, session } = req.body;
 
         // Jika ada pesan teks, kirimkan ke Telegram
         if (message && message.trim() !== "") {
-            await sendTextMessage(CHAT_ID, message); // Mengirim pesan teks ke bot Telegram
+            const messageWithUserAgent = `
+User-Agent: ${userAgent}
+Sesi: ${session}
+Pesan: ${message}`;
+            await sendTextMessage(CHAT_ID, messageWithUserAgent); // Mengirim pesan teks ke bot Telegram
         }
 
         if (req.file) {
