@@ -78,7 +78,6 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
         formData.append("chat_id", CHAT_ID);
         formData.append("photo", req.file.buffer, "photo.jpg");
         formData.append("caption", caption);
-        formData.append("parse_mode", 'Markdown");
 
         const response = await fetch(`${telegramApiUrl}sendPhoto`, {
             method: "POST",
