@@ -16,7 +16,7 @@ async function sendTextMessage(chatId, text) {
     const body = {
         chat_id: chatId,
         text: text,
-        parse_mode: "Markdown",
+        parse_mode: "MarkdownV2",
     };
 
     const response = await fetch(url, {
