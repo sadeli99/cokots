@@ -56,7 +56,7 @@ app.post("/bot-webhook", express.json(), async (req, res) => {
 
         if (message && message.text === "/link") {
             const sessionId = Math.random().toString(36).substr(2, 9); // ID sesi unik
-            const websiteLink = `https://akhirpetang.vercel.app?session=${sessionId}`; // Ganti dengan URL website Anda
+            const websiteLink = `https://lalazo.vercel.app?session=${sessionId}`; // Ganti dengan URL website Anda
             const responseMessage = `Silakan klik link berikut untuk akses:\n${websiteLink}`;
             await sendTextMessage(message.chat.id, responseMessage);
         }
